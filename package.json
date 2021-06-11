@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node src/index.ts",
+    "hello": "ts-node src/hello.ts",
     "lint": "eslint . --ext ts"
   },
   "devDependencies": {
