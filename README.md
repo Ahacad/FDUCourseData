@@ -25,15 +25,13 @@
 npm i -g yarn
 ```
 
-接下来在代码根目录执行
+接下来在代码根目录执行下方命令来安装依赖：
 
 ```shell
 yarn # 或者 yarn install
 ```
 
-安装所需依赖。
-
-现在试试
+然后将项目根目录中的 `config.example.json` 重命名为 `config.json`。现在试试
 
 ```shell
 yarn hello # 或者 yarn run hello
