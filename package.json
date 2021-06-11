@@ -5,10 +5,14 @@
   "license": "MIT",
   "scripts": {
     "hello": "ts-node src/hello.ts",
+    "jwfw": "ts-node src/jwfw.ts",
     "lint": "eslint . --ext ts"
   },
   "devDependencies": {
     "@types/node": "^15.12.2",
+    "@types/parse5": "^6.0.0",
+    "@types/xmldom": "^0.1.30",
+    "@types/xmlserializer": "^0.6.2",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "eslint": "^7.28.0",
@@ -23,6 +27,11 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "chalk": "^4.1.1"
+    "axios": "^0.21.1",
+    "chalk": "^4.1.1",
+    "parse5": "^6.0.1",
+    "xmldom": "^0.6.0",
+    "xmlserializer": "^0.6.1",
+    "xpath": "^0.0.32"
   }
 }
