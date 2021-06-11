@@ -6,7 +6,7 @@ import { DOMParser } from 'xmldom'
 import { createWriteStream, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { JwfwItem } from './types'
-import { config, logger, formUrlEncoded, sleep } from './utils'
+import { config, logger, formUrlEncoded } from './utils'
 
 if (!config.SEMESTER_ID) {
   logger.error('请在 config.json 中配置学期 ID 字段 SEMESTER_ID')
