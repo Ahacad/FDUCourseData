@@ -57,7 +57,8 @@
 | arrangeInfo.endUnit | number | 课时到第几节结束 | 2 | 闭区间，2 对应早上第二节课，以此类推 |
 | arrangeInfo.rooms | string | 课时上课地点 | "H4504" | |
 | arrangeInfo.weekState | string | 课时上课周位图 | "00101010101010101000000000000000000000000000000000000" | 0 表示对应周不上课，1 表示上课 |
-| arrangeInfo.weekStateDigest | string | 课时上课周（便于阅读） | "2-16双" | maxStudent | number | 最大选课人数 | 120 | |
+| arrangeInfo.weekStateDigest | string | 课时上课周（便于阅读） | "2-16双" | |
+| maxStudent | number | 最大选课人数 | 120 | |
 
 ### 可获取但不保留的数据
 
