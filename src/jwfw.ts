@@ -41,6 +41,7 @@ const HEADERS = {
 // 数据存储目录相关
 const DATA_PATH = join(process.cwd(), 'data')
 const SEMESTER_PATH = join(DATA_PATH, `${config.SEMESTER_ID}`)
+mkdirSync(SEMESTER_PATH, { recursive: true })
 const HTML_PATH = join(SEMESTER_PATH, 'jwfw.html')
 const JSON_PATH = join(SEMESTER_PATH, `jwfw.json`)
 
@@ -64,7 +65,6 @@ async function getJwfw() {
     },
   )
 
-  mkdirSync(SEMESTER_PATH, { recursive: true })
   const writer = createWriteStream(HTML_PATH)
   await jwfwHtml.data.pipe(writer)
 

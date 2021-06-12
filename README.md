@@ -1,4 +1,4 @@
-# 复旦大学历年本科开课数据爬虫
+# 复旦大学本科开课数据爬虫
 
 <!-- TODO: Description: What? Why? How? -->
 
