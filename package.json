@@ -8,6 +8,7 @@
     "jwfw": "ts-node src/jwfw.ts",
     "xk": "ts-node src/xk.ts",
     "combine": "ts-node src/combine.ts",
+    "insert": "ts-node src/insert.ts",
     "lint": "eslint . --ext ts"
   },
   "devDependencies": {
