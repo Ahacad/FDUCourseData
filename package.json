@@ -6,6 +6,8 @@
   "scripts": {
     "hello": "ts-node src/hello.ts",
     "jwfw": "ts-node src/jwfw.ts",
+    "xk": "ts-node src/xk.ts",
+    "combine": "ts-node src/combine.ts",
     "lint": "eslint . --ext ts"
   },
   "devDependencies": {

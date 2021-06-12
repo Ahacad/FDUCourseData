@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync, PathLike } from 'fs'
 import { join } from 'path'
 import chalk from 'chalk'
 
@@ -42,29 +42,35 @@ if (!existsSync(CONFIG_FILE_PATH)) {
   process.exit(1)
 }
 
-try {
-  /** config.json 文件内容 */
-  const parsedConfigFileContent = JSON.parse(
-    readFileSync(CONFIG_FILE_PATH, 'utf-8'),
-  )
-  if (parsedConfigFileContent.SEMESTER_ID) {
-    config.SEMESTER_ID = parsedConfigFileContent.SEMESTER_ID
+export function readJSONFile(path: PathLike) {
+  let parsedFileContent
+  try {
+    /** config.json 文件内容 */
+    parsedFileContent = JSON.parse(readFileSync(path, 'utf-8'))
+  } catch (err) {
+    if (err.message === 'Unexpected end of JSON input') {
+      logger.error(`${path} 文件不是标准 JSON 格式`)
+      process.exit(1)
+    }
+    throw err
   }
-  if (parsedConfigFileContent.JWFW_COOKIES) {
-    config.JWFW_COOKIES = parsedConfigFileContent.JWFW_COOKIES
-  }
-  if (parsedConfigFileContent.XK_COOKIES) {
-    config.XK_COOKIES = parsedConfigFileContent.XK_COOKIES
-  }
-  if (parsedConfigFileContent.XK_PROFILE_ID) {
-    config.XK_PROFILE_ID = parsedConfigFileContent.XK_PROFILE_ID
-  }
-} catch (err) {
-  if (err.message === 'Unexpected end of JSON input') {
-    logger.error('config.json 文件格式不正确')
-    process.exit(1)
-  }
-  throw err
+  return parsedFileContent
+}
+
+/** config.json 文件内容 */
+const parsedConfigFileContent = readJSONFile(CONFIG_FILE_PATH)
+
+if (parsedConfigFileContent.SEMESTER_ID) {
+  config.SEMESTER_ID = parsedConfigFileContent.SEMESTER_ID
+}
+if (parsedConfigFileContent.JWFW_COOKIES) {
+  config.JWFW_COOKIES = parsedConfigFileContent.JWFW_COOKIES
+}
+if (parsedConfigFileContent.XK_COOKIES) {
+  config.XK_COOKIES = parsedConfigFileContent.XK_COOKIES
+}
+if (parsedConfigFileContent.XK_PROFILE_ID) {
+  config.XK_PROFILE_ID = parsedConfigFileContent.XK_PROFILE_ID
 }
 
 /** 将对象转为 Form Data 格式 */
