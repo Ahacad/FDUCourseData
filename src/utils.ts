@@ -77,7 +77,10 @@ if (parsedConfigFileContent.XK_PROFILE_ID) {
 export const formUrlEncoded = (x: Record<string, any>) =>
   Object.keys(x).reduce((p, c) => `${p}&${c}=${encodeURIComponent(x[c])}`, '')
 
-/** 暂停数毫秒 */
+/** 暂停数毫秒
+ *
+ * 注意，不要在 forEach/map/filter 等方法内使用该函数，因为它们会默认并行化要迭代的任务，请使用 for of
+ */
 export const sleep = async (ms = 1000) =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
