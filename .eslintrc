@@ -27,6 +27,8 @@
         "argsIgnorePattern": "^_"
       }
     ],
+    "no-await-in-loop": 0,
+    "no-restricted-syntax": 0,
     "no-console": 0,
     "prettier/prettier": [
       "error",

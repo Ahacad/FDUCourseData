@@ -36,9 +36,14 @@ const HEADERS = {
   origin: 'https://xk.fudan.edu.cn',
   referer: 'https://xk.fudan.edu.cn/xk/stdElectCourse!defaultPage.action',
   'sec-ch-ua':
-    '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
+    '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
   'sec-ch-ua-mobile': '?0',
   'sec-fetch-dest': 'empty',
+  'sec-fetch-mode': 'cors',
+  'sec-fetch-site': 'same-origin',
+  'user-agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36',
+  'x-requested-with': 'XMLHttpRequest',
 }
 
 // 数据存储目录相关
@@ -53,11 +58,11 @@ async function getDataByCode(prefix: string): Promise<boolean> {
   const OUTPUT_PATH = join(RAW_PATH, `${prefix}`)
   if (existsSync(OUTPUT_PATH)) {
     // 高频爬取比较敏感，所以如果想重新爬取需要手动删除上一次的文件来确认
-    // console.log(`文件 ${OUTPUT_PATH} 已存在，如果需要重新爬取请先手动删除`)
     return false
   }
-  // 爬取前间隔 1 秒
-  sleep()
+  // TODO: 失败后重试若干次，若检测到“请不要过快点击”字符串则动态增加间隔时间
+  // 爬取前歇一会儿
+  await sleep(1000)
   const res = await axios.post(
     `https://xk.fudan.edu.cn/xk/stdElectCourse!queryLesson.action?profileId=${config.XK_PROFILE_ID}`,
     formUrlEncoded({
@@ -71,14 +76,20 @@ async function getDataByCode(prefix: string): Promise<boolean> {
     },
   )
 
-  const writer = createWriteStream(OUTPUT_PATH)
-  await res.data.pipe(writer)
-  return true
+  return new Promise<boolean>((r) => {
+    const writer = createWriteStream(OUTPUT_PATH)
+    res.data.pipe(writer)
+
+    writer.on('finish', () => {
+      r(true)
+    })
+  })
 }
 
 /** 爬取本学期所有前缀课程数据 */
 async function getAllDataByCode() {
-  CODE_PREFIXES.forEach(async (prefix, i) => {
+  let i = 0
+  for (const prefix of CODE_PREFIXES) {
     logger.info(
       `正在爬取前缀为 ${prefix} 的课程数据 (${i + 1}/${CODE_PREFIXES.length})`,
     )
@@ -88,7 +99,8 @@ async function getAllDataByCode() {
         `文件 ${join(RAW_PATH, `${prefix}`)} 已存在，若需重新爬取请手动删除`,
       )
     }
-  })
+    i += 1
+  }
 }
 
 /** 将爬取到的文本转为可用 JSON 数据 */
