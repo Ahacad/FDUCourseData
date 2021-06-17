@@ -151,5 +151,10 @@ yarn insert
 <!-- 项目 maintainer 们请把自己的联系方式留在这里 -->
 
 - CLDXiang 邮件：[cldxiang@qq.com](mailto:cldxiang@qq.com)
+- Ahacad 邮件: [ahacad@126.com](mailto:ahacad@126.com)
 
-<!-- TODO: 或许可以加上贡献者名单（自愿是否上榜），包括数据提供者和代码贡献者 -->
+## 🙏🏻 贡献者们，ありがとう！
+
+| Thanks! | Did |
+| ---     | --- |
+|[CLDXiang](https://github.com/CLDXiang)| 代码 |
