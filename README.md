@@ -14,7 +14,7 @@
 
 ### 一句话总结
 
-准备好 cookies 放在 ``config.json` 中，安装依赖，运行 `yarn xk`。
+准备好 cookies 放在 `config.json` 中，安装依赖，运行 `yarn xk`。
 
 ### 0. 做好准备
 
