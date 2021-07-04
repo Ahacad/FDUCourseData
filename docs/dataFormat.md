@@ -56,7 +56,7 @@
 
 ## 目前已无法获取的数据
 
-学校于 2021 年初下线了 jwfw 课程大纲中每门课程的详情页，导致此后的学期无法再爬取到部分字段，这些字段的爬取程序不再存于此仓库，仅在 [Releases](https://github.com/CLDXiang/FDUCourseData/releases) 中过往学期的数据存有备份：
+学校于 2021 年初下线了 jwfw 课程大纲中每门课程的详情页，导致此后的学期无法再爬取到部分字段，这些字段的爬取程序不再存于此仓库，仅在 [Releases](https://github.com/Ahacad/FDUCourseData/releases) 中过往学期的数据存有备份：
 
 | 字段 | 类型 | 说明 | 示例 | 备注 |
 | --- | --- | --- | --- | --- |
