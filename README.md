@@ -12,6 +12,10 @@
 
 ## ✨ 我想要爬取本学期课程数据
 
+### 一句话总结
+
+准备好 cookies 放在 ``config.json` 中，安装依赖，运行 `yarn xk`。
+
 ### 0. 做好准备
 
 将源码下载或 clone 到本地，确保本地安装了较新版本的 [Node.js](https://nodejs.org/)，本程序应该可以直接用 NPM CLI 运行，但我喜欢用 [yarn](https://yarnpkg.com/) 🐶，所以本文说明中均使用 yarn。
