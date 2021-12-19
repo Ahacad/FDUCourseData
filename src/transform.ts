@@ -36,6 +36,22 @@ function combineTeachers(oldTeachers: string[][]) {
   return Array.from(teachers).join(',')
 }
 
+function dealWithdrawable(drop: boolean | '是' | '否' | '') {
+  if (drop === '是') {
+    return true
+  }
+  if (drop === '否') {
+    return false
+  }
+  if (drop === '') {
+    return true
+  }
+  if (typeof drop !== 'boolean') {
+    logger.warn(`unknown withdrawable ${drop}`)
+  }
+  return drop
+}
+
 fileNames.forEach((fileName, i) => {
   logger.info(`正在处理 ${fileName} (${i + 1}/${fileNames.length})...`)
   const fileContent = readJSONFile(join(TRANSFORM_PATH, fileName)) as
@@ -68,7 +84,7 @@ fileNames.forEach((fileName, i) => {
         remark: xkItem.remark,
         examFormName: xkItem.examFormName,
         examTime: xkItem.examTime,
-        withdrawable: xkItem.withdrawable,
+        withdrawable: dealWithdrawable(xkItem.withdrawable),
         maxStudent: xkItem.maxStudent,
       } as DBLessonItem
 
