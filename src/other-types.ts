@@ -28,6 +28,8 @@ export interface DBLessonItem {
   code: string
   /** 课程名 */
   name: string
+  /** 课程分类 */
+  category: string
   /** 学分 */
   credits: number
   /** 授课教师列表 */
