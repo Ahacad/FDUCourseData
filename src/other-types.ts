@@ -43,7 +43,7 @@ export interface DBLessonItem {
   /** 考试时间 */
   examTime: string
   /** 是否允许期中退课 */
-  withdrawable: boolean | '是' | '否' | ''
+  withdrawable: boolean
   /** 排课时间段 */
   arrangeInfo: DBArrangeInfo[]
   /** 选课人数上限 */
