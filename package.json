@@ -9,6 +9,7 @@
     "xk": "ts-node src/xk.ts",
     "combine": "ts-node src/combine.ts",
     "insert": "ts-node src/insert.ts",
+    "transform": "ts-node src/transform.ts",
     "lint": "eslint . --ext ts"
   },
   "devDependencies": {
