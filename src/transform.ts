@@ -52,6 +52,10 @@ function dealWithdrawable(drop: boolean | '是' | '否' | '') {
   return drop
 }
 
+function isRealXkItem(xk: RealXkItem | OldXkItem): xk is RealXkItem {
+  return (xk as RealXkItem).scheduled !== undefined
+}
+
 fileNames.forEach((fileName, i) => {
   logger.info(`正在处理 ${fileName} (${i + 1}/${fileNames.length})...`)
   const fileContent = readJSONFile(join(TRANSFORM_PATH, fileName)) as
@@ -71,7 +75,7 @@ fileNames.forEach((fileName, i) => {
     fileContent.forEach((xkItem) => {
       // TODO: 对对象字段进行格式校验
 
-      const lesson = {
+      const lesson: DBLessonItem = {
         id: xkItem.id,
         no: xkItem.no,
         semester: xkItem.semester,
@@ -86,17 +90,16 @@ fileNames.forEach((fileName, i) => {
         examTime: xkItem.examTime,
         withdrawable: dealWithdrawable(xkItem.withdrawable),
         maxStudent: xkItem.maxStudent,
-      } as DBLessonItem
+        teachers: '',
+        arrangeInfo: [],
+      }
 
       if (lesson.category === '未分类') {
         unCategoriedXkItems.push(lesson)
       }
 
-      if (xkItem.scheduled !== undefined) {
+      if (isRealXkItem(xkItem)) {
         // 新数据
-        // eslint-disable-next-line no-param-reassign
-        xkItem = xkItem as RealXkItem
-
         lesson.teachers = xkItem.teachers
         lesson.arrangeInfo = xkItem.arrangeInfo.map((arrange) => ({
           weekDay: arrange.weekDay,
@@ -107,10 +110,7 @@ fileNames.forEach((fileName, i) => {
         }))
         allXkItems.push(lesson)
       } else {
-        // 新数据
-        // eslint-disable-next-line no-param-reassign
-        xkItem = xkItem as OldXkItem
-
+        // 旧数据
         lesson.teachers = combineTeachers(
           xkItem.arrangeInfo.map((arrange) => arrange.teachers),
         )
