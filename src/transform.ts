@@ -53,7 +53,7 @@ function dealWithdrawable(drop: boolean | '是' | '否' | '') {
 }
 
 function isRealXkItem(xk: RealXkItem | OldXkItem): xk is RealXkItem {
-  return xk.scheduled !== undefined
+  return (xk as RealXkItem).scheduled !== undefined
 }
 
 fileNames.forEach((fileName, i) => {

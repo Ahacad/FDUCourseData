@@ -84,8 +84,6 @@ export interface OldXkItem {
   code: string
   /** 课程名 */
   name: string
-  /** 这里是为了 transform.ts 判别方便引入的辅助字段，在老数据中没有含义 */
-  scheduled?: boolean
   /** 学分 */
   credits: number
   /** 开课院系 */
