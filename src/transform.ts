@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
-import { logger, readJSONFile } from './utils'
+import { logger, readJSONFile, getLessonCategory } from './utils'
 import { OldXkItem, DBLessonItem, RealXkItem } from './other-types'
 
 // 数据存储目录相关
@@ -24,6 +24,8 @@ let allCourseCnt = 0
 /** 跳过文件计数器 */
 let skippedFile = 0
 
+const unCategoriedXkItems: DBLessonItem[] = []
+
 function combineTeachers(oldTeachers: string[][]) {
   const teachers = new Set<string>()
   for (const teacher of oldTeachers) {
@@ -32,6 +34,26 @@ function combineTeachers(oldTeachers: string[][]) {
     }
   }
   return Array.from(teachers).join(',')
+}
+
+function dealWithdrawable(drop: boolean | '是' | '否' | '') {
+  if (drop === '是') {
+    return true
+  }
+  if (drop === '否') {
+    return false
+  }
+  if (drop === '') {
+    return true
+  }
+  if (typeof drop !== 'boolean') {
+    logger.warn(`unknown withdrawable ${drop}`)
+  }
+  return drop
+}
+
+function isRealXkItem(xk: RealXkItem | OldXkItem): xk is RealXkItem {
+  return (xk as RealXkItem).scheduled !== undefined
 }
 
 fileNames.forEach((fileName, i) => {
@@ -53,64 +75,54 @@ fileNames.forEach((fileName, i) => {
     fileContent.forEach((xkItem) => {
       // TODO: 对对象字段进行格式校验
 
-      if (xkItem.scheduled !== undefined) {
-        // 新数据
-        // eslint-disable-next-line no-param-reassign
-        xkItem = xkItem as RealXkItem
+      const lesson: DBLessonItem = {
+        id: xkItem.id,
+        no: xkItem.no,
+        semester: xkItem.semester,
+        code: xkItem.code,
+        name: xkItem.name,
+        category: getLessonCategory(xkItem.no),
+        credits: xkItem.credits,
+        department: xkItem.department,
+        campusName: xkItem.campusName,
+        remark: xkItem.remark,
+        examFormName: xkItem.examFormName,
+        examTime: xkItem.examTime,
+        withdrawable: dealWithdrawable(xkItem.withdrawable),
+        maxStudent: xkItem.maxStudent,
+        teachers: '',
+        arrangeInfo: [],
+      }
 
-        allXkItems.push({
-          id: xkItem.id,
-          no: xkItem.no,
-          semester: xkItem.semester,
-          code: xkItem.code,
-          name: xkItem.name,
-          credits: xkItem.credits,
-          department: xkItem.department,
-          campusName: xkItem.campusName,
-          teachers: xkItem.teachers,
-          remark: xkItem.remark,
-          examFormName: xkItem.examFormName,
-          examTime: xkItem.examTime,
-          withdrawable: xkItem.withdrawable,
-          maxStudent: xkItem.maxStudent,
-          arrangeInfo: xkItem.arrangeInfo.map((arrange) => ({
-            weekDay: arrange.weekDay,
-            startUnit: arrange.startUnit,
-            endUnit: arrange.endUnit,
-            rooms: arrange.rooms,
-            weekStateDigest: arrange.weekStateDigest,
-          })),
-        })
+      if (lesson.category === '未分类') {
+        unCategoriedXkItems.push(lesson)
+      }
+
+      if (isRealXkItem(xkItem)) {
+        // 新数据
+        lesson.teachers = xkItem.teachers
+        lesson.arrangeInfo = xkItem.arrangeInfo.map((arrange) => ({
+          weekDay: arrange.weekDay,
+          startUnit: arrange.startUnit,
+          endUnit: arrange.endUnit,
+          rooms: arrange.rooms,
+          weekStateDigest: arrange.weekStateDigest,
+        }))
+        allXkItems.push(lesson)
       } else {
-        // 新数据
-        // eslint-disable-next-line no-param-reassign
-        xkItem = xkItem as OldXkItem
+        // 旧数据
+        lesson.teachers = combineTeachers(
+          xkItem.arrangeInfo.map((arrange) => arrange.teachers),
+        )
+        lesson.arrangeInfo = xkItem.arrangeInfo.map((arrange) => ({
+          weekDay: arrange.weekDay,
+          startUnit: Number(arrange.section.split('-')[0]),
+          endUnit: Number(arrange.section.split('-')[1]),
+          rooms: arrange.rooms,
+          weekStateDigest: arrange.weekStateDigest,
+        }))
 
-        allXkItems.push({
-          id: xkItem.id,
-          no: xkItem.no,
-          semester: xkItem.semester,
-          code: xkItem.code,
-          name: xkItem.name,
-          credits: xkItem.credits,
-          department: xkItem.department,
-          campusName: xkItem.campusName,
-          teachers: combineTeachers(
-            xkItem.arrangeInfo.map((arrange) => arrange.teachers),
-          ),
-          remark: xkItem.remark,
-          examFormName: xkItem.examFormName,
-          examTime: xkItem.examTime,
-          withdrawable: xkItem.withdrawable,
-          maxStudent: xkItem.maxStudent,
-          arrangeInfo: xkItem.arrangeInfo.map((arrange) => ({
-            weekDay: arrange.weekDay,
-            startUnit: Number(arrange.section.split('-')[0]),
-            endUnit: Number(arrange.section.split('-')[1]),
-            rooms: arrange.rooms,
-            weekStateDigest: arrange.weekStateDigest,
-          })),
-        })
+        allXkItems.push(lesson)
       }
 
       allCourseCnt += 1
@@ -123,3 +135,4 @@ if (skippedFile) {
   logger.warn(`共跳过 ${skippedFile} 个文件`)
 }
 logger.success(`共处理 ${allCourseCnt} 条课程数据`)
+logger.warn(`未分类 ${unCategoriedXkItems.length} 条课程数据`)

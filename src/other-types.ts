@@ -28,6 +28,8 @@ export interface DBLessonItem {
   code: string
   /** 课程名 */
   name: string
+  /** 课程分类 */
+  category: string
   /** 学分 */
   credits: number
   /** 授课教师列表 */
@@ -41,7 +43,7 @@ export interface DBLessonItem {
   /** 考试时间 */
   examTime: string
   /** 是否允许期中退课 */
-  withdrawable: boolean | '是' | '否' | ''
+  withdrawable: boolean
   /** 排课时间段 */
   arrangeInfo: DBArrangeInfo[]
   /** 选课人数上限 */
@@ -82,8 +84,6 @@ export interface OldXkItem {
   code: string
   /** 课程名 */
   name: string
-  /** 这里是为了 transform.ts 判别方便引入的辅助字段，在老数据中没有含义 */
-  scheduled?: boolean
   /** 学分 */
   credits: number
   /** 开课院系 */
