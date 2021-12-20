@@ -215,7 +215,7 @@ export const CODE_PREFIXES = [
 
 /** 映射分类 */
 export function getLessonCategory(code: string): string {
-  if (/NDEC110004|NDEC110005/.test(code)) {
+  if (/NDEC110002|NDEC110004|NDEC110005/.test(code)) {
     return '军理'
   }
   if (/PEDU/.test(code)) {
@@ -280,16 +280,20 @@ export function getLessonCategory(code: string): string {
   ) {
     return '七模'
   }
-  if (/ENGL110050|ENGL110051|ENGL110070/.test(code)) {
+  if (
+    /ENGL110050|ENGL110051|ENGL110070|ENGL110079|ENGL110059|ENGL110049/.test(
+      code,
+    )
+  ) {
     return '大英基础'
   }
-  if (/ENGL110(068|012|077|035|074|043|042|025|064|061)/.test(code)) {
+  if (/ENGL110(068|012|077|033|035|074|043|042|025|064|061)/.test(code)) {
     return '英语进阶·通用学术英语'
   }
   if (/ENGL110(073|078|066)/.test(code)) {
     return '英语进阶·专用学术英语'
   }
-  if (/ENGL110(009|072|024|076|069|071|054|057|065)/.test(code)) {
+  if (/ENGL110(009|072|024|076|069|071|054|057|065|063)/.test(code)) {
     return '英语进阶·英语文化'
   }
   if (/ENGL110(067|036|056|060|062)/.test(code)) {
@@ -299,7 +303,7 @@ export function getLessonCategory(code: string): string {
     return '英语高阶·专用学术英语'
   }
   if (
-    /FORE11004|FORE11005|FORE11006(0|4|5)|FORE110092|FORE110079|FORE11008(0|8|3|4|5|6|7)|FORE110109|FORE11011|1/.test(
+    /FORE11004|FORE11005|FORE11006(0|4|5)|FORE110092|FORE110079|FORE11008(0|8|3|4|5|6|7)|FORE110109|FORE11011/.test(
       code,
     )
   ) {
@@ -320,7 +324,7 @@ export function getLessonCategory(code: string): string {
     return '三创'
   }
   if (
-    /CHIN110|ICES110|FORE110(001|006|007|013|021|030|031|036|037|038|039|061|062|063|066|068|071|073|074|075|076|077|081|082|093|094|095|096|097|098|099|100|101|102|103|104|105|106|107|108|121)|HIST110|JOUR110|MUSE110|PHIL110(?!052)|PTSS110(017|009|02|049|075|039|040|044|052)|NDEC110006|FINE110(022|023|024|025|069)/.test(
+    /CHIN110|ICES110|ICES170|FORE110(001|006|007|013|021|030|031|036|037|038|039|061|062|063|066|068|071|073|074|075|076|077|081|082|093|094|095|096|097|098|099|100|101|102|103|104|105|106|107|108|121)|HIST110|JOUR110|MUSE110|PHIL110(?!052)|PTSS110(017|009|02|049|075|039|040|044|052)|NDEC110006|FINE110(022|023|024|025|069)/.test(
       code,
     )
   ) {
